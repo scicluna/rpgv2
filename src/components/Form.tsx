@@ -1,5 +1,7 @@
 import { CharState } from "../App";
 import React, { useEffect, useRef, useState } from "react";
+import { Race, dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling } from '../assets/libraries/races.js'
+
 
 type form = {
     number: number
@@ -126,18 +128,54 @@ function statSubForm(form: form, char: CharState, changeChar: (key: string, valu
 }
 
 function selectSubForm(form: form) {
+    let values;
+    if (form.name == 'race') values = [dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling]
+    if (form.name == 'classes') return
+    if (form.name == 'backgrounds') return
+
+    if (!values) return
+
+    const [currentValue, setCurrentValue] = useState<number>(0)
+    const realValue = values[currentValue - 1]
+
     return (
         <>
             <div className={`${form.name}area`}>
                 <label htmlFor={`${form.name}input`}>{form.name.toUpperCase()}</label>
-                <select id={`${form.name}input`}>
-                    <option value=''>Choose your ${form.name}</option>
-                    {form.options?.map(option =>
-                        <option value={option} key={option}>{option.toUpperCase()}</option>
+                <select id={`${form.name}input`} onChange={(e) => setCurrentValue(e.currentTarget.selectedIndex)}>
+                    <option value=''>Choose Wisely</option>
+                    {values.map((value, i) =>
+                        <option value={value.name} key={i}>{value.name}</option>
                     )}
                 </select>
-                <div className={`${form.name}information`}></div>
+                <div className={`${form.name}information`}>
+                    {form.name == 'race' ? raceDescription(realValue) : form.name == 'class' ? classDescription() : backgroundDescription()}
+                </div>
             </div>
+        </>
+    )
+}
+
+//SUB SUB COMPONENTS//
+
+function raceDescription(value: Race) {
+    return (
+        <>
+            <h1>{value.name}</h1>
+        </>
+    )
+}
+
+function classDescription() {
+    return (
+        <>
+        </>
+    )
+}
+
+function backgroundDescription() {
+    return (
+        <>
         </>
     )
 }

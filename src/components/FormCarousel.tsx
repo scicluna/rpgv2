@@ -14,11 +14,10 @@ export default function FormCarousel({ setChar, setPosition, char, formPosition 
     const forms = [
         { number: 0, name: 'nameinputs', type: 'fill', fill: ['name', 'age', 'gender'] },
         { number: 1, name: 'statinputs', type: 'stats' },
-        { number: 2, name: 'raceinput', type: 'select', options: ['dwarf', 'elf', 'gnome', 'half-elf', 'half-orc', 'halfling', 'human', 'tiefling'] },
-        { number: 3, name: 'classinput', type: 'select', options: ['artificer', 'barbarian', 'bard', 'cleric', 'druid', 'fighter', 'monk', 'paladin', 'ranger', 'rogue', 'sorcerer', 'warlock', 'wizard'] },
-        { number: 4, name: 'backgroundinput', type: 'select', options: ['acolyte', 'charlatan', 'criminal', 'entertainer', 'folkhero', 'gladiator', 'guildartisan', 'hemrit', 'knight', 'noble', 'outlander', 'pirate', 'sage', 'sailor', 'soldier', 'urchin'] },
+        { number: 2, name: 'race', type: 'select', options: ['dragonborn', 'dwarf', 'elf', 'gnome', 'halfelf', 'halforc', 'halfling', 'human', 'tiefling'] },
+        { number: 3, name: 'class', type: 'select', options: ['artificer', 'barbarian', 'bard', 'cleric', 'druid', 'fighter', 'monk', 'paladin', 'ranger', 'rogue', 'sorcerer', 'warlock', 'wizard'] },
+        { number: 4, name: 'background', type: 'select', options: ['acolyte', 'charlatan', 'criminal', 'entertainer', 'folkhero', 'gladiator', 'guildartisan', 'hemrit', 'knight', 'noble', 'outlander', 'pirate', 'sage', 'sailor', 'soldier', 'urchin'] },
     ]
-
 
     const carouselWrapperRef = useRef<HTMLDivElement>(null);
 
