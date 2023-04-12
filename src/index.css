@@ -1,0 +1,151 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: black;
+}
+
+.mainstage {
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url('./assets/backgrounds/form0.webp');
+    background-position: center;
+    background-size: cover;
+    transition: 2s ease-in-out;
+    font-family: 'Righteous', cursive;
+}
+
+.carouselwrapper {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-10%, -50%);
+    transition: 2s ease-in;
+}
+
+.card {
+    padding: 15px;
+    width: 50vw;
+    height: 40vh;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    border: 5px solid black
+}
+
+form {
+    padding: 15px;
+    width: 50vw;
+    height: 40vh;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.onwards,
+.backwards {
+    display: flex;
+    align-items: center;
+}
+
+.onwards>button,
+.backwards>button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: transparent;
+    background-color: rgba(222, 184, 135, 0.137);
+}
+
+.backwards {
+    transform: rotateY(180deg);
+}
+
+.invisible {
+    opacity: 0;
+}
+
+.form-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Place the background below the form content */
+    transition: opacity 2.5s ease-in;
+    background-position: center;
+}
+
+/*STATS*/
+.statinputs {
+    gap: 15px;
+    align-items: start;
+}
+
+.row {
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40vw;
+}
+
+.row>input {
+    text-align: center;
+    width: 30px;
+    font-size: 25px;
+    margin-left: 15px;
+    height: 100%;
+    background-color: rgba(245, 222, 179, 0.692);
+}
+
+.row>label {
+    width: 50px;
+}
+
+.row>p {
+    margin-left: 15px;
+    width: 40px;
+}
+
+
+.statbtns {
+    display: flex;
+    flex-direction: column;
+    width: 40px;
+}
+
+.statbtns>button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.57);
+    outline: 1px transparent;
+}
