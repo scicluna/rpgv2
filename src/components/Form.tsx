@@ -1,6 +1,8 @@
 import { CharState } from "../App";
 import React, { useEffect, useRef, useState } from "react";
 import { Race, dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling } from '../assets/libraries/races.js'
+import { DNDClass, barbarian } from "../assets/libraries/classes";
+import { acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin } from "../assets/libraries/backgrounds";
 
 
 type form = {
@@ -21,6 +23,8 @@ interface Formprop {
 }
 
 export default function Form({ form, setChar, setPosition, char, position }: Formprop) {
+
+    console.log(form)
 
     const formBG = useRef<HTMLDivElement>(null)
 
@@ -130,52 +134,62 @@ function statSubForm(form: form, char: CharState, changeChar: (key: string, valu
 function selectSubForm(form: form) {
     let values;
     if (form.name == 'race') values = [dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling]
-    if (form.name == 'classes') return
-    if (form.name == 'backgrounds') return
+    else if (form.name == 'class') values = [barbarian]
+    else if (form.name == 'backgrounds') return
 
     if (!values) return
 
     const [currentValue, setCurrentValue] = useState<number>(0)
     const realValue = values[currentValue - 1]
 
+    console.log(form.name)
+
+    function raceDescription(race: Race) {
+        return (
+            <>
+                <h1>ITS A RACE</h1>
+            </>
+        )
+    }
+
+    function classDescription(dndClass: DNDClass) {
+        return (
+            <>
+                <h1>ITS A CLASS</h1>
+            </>
+        )
+    }
+
+    function backgroundDescription() {
+        return (
+            <>
+            </>
+        )
+    }
+
+    const renderDescription = () => {
+        if (!realValue) return
+        if ('speed' in realValue) {
+            return raceDescription(realValue)
+        } else if ('hit_die' in realValue) {
+            return classDescription(realValue)
+        }
+    }
+
     return (
         <>
             <div className={`${form.name}area`}>
                 <label htmlFor={`${form.name}input`}>{form.name.toUpperCase()}</label>
                 <select id={`${form.name}input`} onChange={(e) => setCurrentValue(e.currentTarget.selectedIndex)}>
-                    <option value=''>Choose Wisely</option>
+                    <option value="">Choose Wisely</option>
                     {values.map((value, i) =>
                         <option value={value.name} key={i}>{value.name}</option>
                     )}
                 </select>
                 <div className={`${form.name}information`}>
-                    {form.name == 'race' ? raceDescription(realValue) : form.name == 'class' ? classDescription() : backgroundDescription()}
+                    {renderDescription()}
                 </div>
             </div>
-        </>
-    )
-}
-
-//SUB SUB COMPONENTS//
-
-function raceDescription(value: Race) {
-    return (
-        <>
-            <h1>{value.name}</h1>
-        </>
-    )
-}
-
-function classDescription() {
-    return (
-        <>
-        </>
-    )
-}
-
-function backgroundDescription() {
-    return (
-        <>
         </>
     )
 }

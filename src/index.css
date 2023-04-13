@@ -116,8 +116,14 @@ form {
 }
 
 .raceinformation {
-    min-height: 200px;
+    min-height: 300px;
     width: 100%;
+}
+
+#raceinput {
+    width: 100%;
+    height: 30px;
+    margin: 15px;
 }
 
 /*Race End*/
