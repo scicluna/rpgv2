@@ -1,7 +1,7 @@
 import { CharState } from "../App";
 import React, { useEffect, useRef, useState } from "react";
 import { Race, dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling } from '../assets/libraries/races.js'
-import { DNDClass, barbarian } from "../assets/libraries/classes";
+import { DNDClass, barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard } from "../assets/libraries/classes";
 import { Background, acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin } from "../assets/libraries/backgrounds";
 
 
@@ -132,7 +132,7 @@ function statSubForm(form: form, char: CharState, changeChar: (key: string, valu
 function selectSubForm(form: form, char: CharState, changeChar: (key: string, value: string | number | object) => void) {
     let values: (Race | DNDClass | Background)[];
     if (form.name == 'race') values = [dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling]
-    else if (form.name == 'class') values = [barbarian]
+    else if (form.name == 'class') values = [barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard]
     else if (form.name == 'background') values = [acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin]
     else values = []
 
@@ -160,7 +160,12 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
         return (
             <>
                 <h1>{dndClass.name}</h1>
-
+                <p>HP: {dndClass.hit_die}</p>
+                <p>---Proficiencies:---</p>
+                <p>{dndClass.proficiencies.map(prof => <>{prof.name} <br /></>)}</p>
+                <p>---Abilities:---</p>
+                <p>{dndClass.abilities.map(ability => <>{ability} <br /></>)}</p>
+                <p>{dndClass.url}</p>
             </>
         )
     }

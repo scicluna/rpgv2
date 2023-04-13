@@ -55,7 +55,7 @@ interface MultiClassPrerequisite {
 }
 
 interface MultiClassing {
-    prerequisites: MultiClassPrerequisite[];
+    prerequisites?: MultiClassPrerequisite[];
     proficiencies: Proficiency[];
 }
 
@@ -75,7 +75,7 @@ export interface DNDClass {
     starting_equipment: StartingEquipment[];
     starting_equipment_options: ProficiencyChoice[];
     class_levels: string;
-    multi_classing: MultiClassing;
+    multi_classing?: MultiClassing;
     subclasses: Subclass[];
     abilities: string[];
     url: string;
