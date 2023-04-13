@@ -90,10 +90,10 @@ function App() {
   }
 
   return (
-    <main className="mainstage" ref={stage}>
+    <main ref={stage} className={`mainstage ${char.complete ? 'charsheet' : ''}`}>
       {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet char={char} setChar={setChar} setPosition={setPosition} />}
       {char.name && char.age && char.gender && char.str && char.dex && char.con && char.int && char.wis && char.cha && char.race && char.class && char.background
-        && <button className={`${char.complete} ? 'completebtn' : 'hide'`} onClick={(e) => isCompleted(e, char)}>Complete</button>}
+        && <button className={`${!char.complete ? 'completebtn' : 'hide'}`} onClick={(e) => isCompleted(e, char)}>Complete</button>}
     </main>
 
   )

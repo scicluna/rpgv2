@@ -1,0 +1,2 @@
+//Local Node to write state to a .txt file
+//Then, load from the .txt file instead of localStorage

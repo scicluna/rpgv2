@@ -29,7 +29,6 @@ export interface SaveState {
     skillProf: boolean[]
 }
 
-
 export default function CharSheet({ char, setChar, setPosition }: CharSheetProps) {
 
     const [saveState, setSaveState] = useState<SaveState>(JSON.parse(localStorage.getItem('state') ?? '{}') as SaveState || undefined)

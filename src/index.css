@@ -44,12 +44,16 @@ p {
 }
 
 form {
-    padding: 15px;
     width: 50vw;
     height: 60vh;
     display: flex;
     justify-content: space-around;
     position: relative;
+    transition: 1s ease-in;
+}
+
+.carouselwrapper>form:hover {
+    box-shadow: #FC0 5px 0 20px;
 }
 
 .inputs {
@@ -70,9 +74,10 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
+    width: 30px;
+    height: 60vh;
+    right: 0;
+    position: absolute;
     border: transparent;
     background-color: rgba(222, 184, 135, 0.137);
 }
@@ -85,6 +90,7 @@ form {
 
 .backwards {
     transform: rotateY(180deg);
+    left: 0;
 }
 
 .invisible {
@@ -120,7 +126,7 @@ form {
 
 .raceinformation {
     min-height: 300px;
-    width: 100%;
+    width: 70%;
 }
 
 #raceinput {
@@ -196,7 +202,7 @@ form {
 
 .classinformation {
     min-height: 300px;
-    width: 100%;
+    width: 70%;
     word-wrap: normal;
 }
 
@@ -219,14 +225,14 @@ form {
 }
 
 #backgroundinput {
-    width: 100%;
+    width: 70%;
     height: 30px;
     margin: 15px;
 }
 
 .backgroundinformation {
     min-height: 300px;
-    width: 100%;
+    width: 70%;
     word-wrap: normal;
 }
 
@@ -266,16 +272,18 @@ div.box {
 }
 
 form.charsheet {
-    height: 150vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-image: none;
     width: 800px;
     right: 0;
     left: 0;
     margin-right: auto;
     margin-left: auto;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.834);
 }
 
 form.charsheet div.textblock {
@@ -328,7 +336,7 @@ form.charsheet label {
 }
 
 form.charsheet header {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.747);
     display: flex;
     align-content: stretch;
     align-items: stretch;
@@ -392,7 +400,7 @@ form.charsheet main {
     flex-direction: row;
     justify-content: space-between;
     background-image: none;
-    background-color: white;
+    background-color: rgb(220, 220, 220);
 }
 
 form.charsheet main div.label-container {
@@ -872,6 +880,7 @@ form.charsheet main section.attacksandspellcasting>div>table input {
 }
 
 form.charsheet main section.attacksandspellcasting>div textarea {
+    width: 100%;
     border: 0;
 }
 
@@ -1010,22 +1019,21 @@ form.charsheet main section.features div textarea {
 
 .completebtn {
     position: absolute;
-    bottom: 5px;
+    bottom: -0px;
     width: 100vw;
     color: goldenrod;
     background-color: goldenrod;
     outline: transparent;
     border: 1px solid transparent;
     filter: blur(10px);
-    animation: pulse 2s infinite;
     cursor: pointer;
     padding-top: 30px;
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
     0% {
         opacity: 0.5;
-        transform: scale(.9)
     }
 
     50% {
@@ -1035,7 +1043,6 @@ form.charsheet main section.features div textarea {
 
     100% {
         opacity: 0.5;
-        transform: scale(.9)
     }
 }
 
@@ -1076,4 +1083,10 @@ form.charsheet main section.features div textarea {
 
 .faded {
     opacity: 0;
+}
+
+.charsheet {
+    background-color: black;
+    background-image: none !important;
+    height: 100%;
 }

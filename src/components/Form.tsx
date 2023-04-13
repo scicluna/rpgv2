@@ -31,13 +31,12 @@ export default function Form({ form, setChar, setPosition, char, position, end }
         setChar({ ...char, [key]: value })
     }
 
-    function changePosition(e: React.MouseEvent<HTMLButtonElement>) {
+    function changePosition(e: React.MouseEvent<HTMLFormElement>) {
         e.preventDefault()
+        if (!e.currentTarget.dataset.form) return
+        const position = parseInt(e.currentTarget.dataset.form)
 
-        if (position == 0 && e.currentTarget.classList.contains('backwardsbtn')) return
-        if (position == end && e.currentTarget.classList.contains('onwardsbtn')) return
-
-        e.currentTarget.classList.contains('onwardsbtn') ? setPosition(position + 1) : setPosition(position - 1)
+        setPosition(position)
     }
 
     useEffect(() => {
@@ -49,22 +48,11 @@ export default function Form({ form, setChar, setPosition, char, position, end }
     }, [position])
 
     return (
-        <form data-form={form.number} id={`form${form.number}`}>
-            <div className="backwards">
-                <button className={`backwardsbtn ${form.number == 0 ? 'invisible' : ''}`} type="submit" onClick={(e) => changePosition(e)}>
-                    <i className="fas fa-share fa-5x"></i>
-                </button>
-            </div>
-            <div className={`inputs ${form.name}`}>
+        <form data-form={form.number} id={`form${form.number}`} onClick={(e) => changePosition(e)} tabIndex={form.number}>
+            <div className={`inputs ${form.name}`} >
                 <div className="form-background" ref={formBG} style={{ opacity: form.number === 0 ? 0 : 1 }}></div>
                 {form.type == 'fill' ? fillSubform(form, changeChar) : form.type == 'stats' ? statSubForm(form, char, changeChar) : selectSubForm(form, char, changeChar)}
             </div>
-            <div className="onwards">
-                <button className={`onwardsbtn ${form.number == end ? 'invisible' : ''}`} type="submit" onClick={(e) => changePosition(e)}>
-                    <i className="fas fa-share fa-5x"></i>
-                </button>
-            </div>
-
         </form >
     )
 }
