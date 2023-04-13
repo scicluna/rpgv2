@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import { CharState } from '../App'
 import Form from './Form';
 
-
 interface CCprop {
     setChar: React.Dispatch<React.SetStateAction<CharState>>;
     setPosition: React.Dispatch<React.SetStateAction<number>>;

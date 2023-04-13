@@ -27,7 +27,11 @@ function App() {
   const [formPosition, setPosition] = useState(0);
   const stage = useRef<HTMLDivElement>(null)
 
-  console.log(char)
+  useEffect(() => {
+    const state = JSON.parse(localStorage.getItem('state') ?? '{}')
+    if (state?.char?.complete) setChar(state.char)
+  }, [])
+
 
   useEffect(() => {
     if (!stage.current) return;
@@ -40,7 +44,7 @@ function App() {
 
   return (
     <main className="mainstage" ref={stage}>
-      {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet char={char} />}
+      {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet char={char} setChar={setChar} setPosition={setPosition} />}
       {char.name && char.age && char.gender && char.str && char.dex && char.con && char.int && char.wis && char.cha && char.race && char.class && char.background
         && <button className="completebtn" onClick={() => isCompleted(char)}>Complete</button>}
     </main>

@@ -152,7 +152,7 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
     function raceDescription(race: Race) {
         return (
             <>
-                <p>Stat Bonuses: {race.ability_bonuses.map(ability => <>{ability.ability_score.name} {ability.bonus} </>)}</p>
+                <p>Stat Bonuses: {race.ability_bonuses.map(ability => `${ability.ability_score.name} ${ability.bonus} `)}</p>
                 {race.traits.map(trait => <p>{trait.name}</p>)}
                 <p>{race.url}</p>
             </>
@@ -164,9 +164,9 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
             <>
                 <p>HP: {dndClass.hit_die}</p>
                 <p>---Proficiencies:---</p>
-                <p>{dndClass.proficiencies.map(prof => <>{prof.name} <br /></>)}</p>
+                <p>{dndClass.proficiencies.map(prof => `${prof.name}\n`)}</p>
                 <p>---Abilities:---</p>
-                <p>{dndClass.abilities.map(ability => <>{ability} <br /></>)}</p>
+                <p>{dndClass.abilities.map(ability => `${ability}\n`)}</p>
                 <p>{dndClass.url}</p>
             </>
         )
@@ -176,9 +176,9 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
         return (
             <>
                 <p>---Proficiencies:---</p>
-                <p>{background.proficiencies.map(prof => <>{prof} <br /></>)}</p>
+                <p>{background.proficiencies.map(prof => `${prof}\n`)}</p>
                 {background.tools && <p>---Tools:---</p>}
-                <p>{background.tools && background.tools.map(tool => <>{tool}</>)}</p>
+                <p>{background.tools && background.tools.map(tool => `${tool}\n`)}</p>
                 <p>---Abilities:---</p>
                 <p>{background.ability}</p>
                 <p>{background.url}</p>
@@ -206,7 +206,7 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
 
                 }}>
                     <option value="">Choose Wisely</option>
-                    {values.map((value, i) => <option value={value.name} key={i}>{value.name}</option>)}
+                    {values.map((value, i) => <option value={value.name} key={value.name}>{value.name}</option>)}
                 </select>
                 <div className={`${form.name}information`}>
                     {renderDescription()}
