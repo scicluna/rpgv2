@@ -30,7 +30,7 @@ function App() {
 
   return (
     <main className="mainstage" ref={stage}>
-      {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet />}
+      {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet char={char} />}
     </main>
 
   )

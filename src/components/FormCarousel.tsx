@@ -29,7 +29,7 @@ export default function FormCarousel({ setChar, setPosition, char, formPosition 
 
     return (
         <section className='carouselwrapper' data-wrapper={formPosition} ref={carouselWrapperRef}>
-            {forms.map(form => <Form form={form} char={char} setChar={setChar} setPosition={setPosition} position={formPosition} key={form.name} />)}
+            {forms.map(form => <Form form={form} char={char} end={forms.length - 1} setChar={setChar} setPosition={setPosition} position={formPosition} key={form.name} />)}
         </section>
     )
 }

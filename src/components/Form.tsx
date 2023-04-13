@@ -15,6 +15,7 @@ type form = {
 
 interface Formprop {
     form: form
+    end: number
     setChar: React.Dispatch<React.SetStateAction<CharState>>;
     setPosition: React.Dispatch<React.SetStateAction<number>>
     key: string
@@ -22,7 +23,7 @@ interface Formprop {
     position: number
 }
 
-export default function Form({ form, setChar, setPosition, char, position }: Formprop) {
+export default function Form({ form, setChar, setPosition, char, position, end }: Formprop) {
 
     const formBG = useRef<HTMLDivElement>(null)
 
@@ -32,6 +33,10 @@ export default function Form({ form, setChar, setPosition, char, position }: For
 
     function changePosition(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
+
+        if (position == 0 && e.currentTarget.classList.contains('backwardsbtn')) return
+        if (position == end && e.currentTarget.classList.contains('onwardsbtn')) return
+
         e.currentTarget.classList.contains('onwardsbtn') ? setPosition(position + 1) : setPosition(position - 1)
     }
 
@@ -40,7 +45,6 @@ export default function Form({ form, setChar, setPosition, char, position }: For
         if (position == form.number) {
             formBG.current.style.opacity = '0'
         } else formBG.current.style.opacity = '1'
-
         formBG.current.style.backgroundImage = `url(./src/assets/backgrounds/form${form.number}.webp)`
     }, [position])
 
@@ -52,7 +56,7 @@ export default function Form({ form, setChar, setPosition, char, position }: For
                 </button>
             </div>
             <div className={`inputs ${form.name}`}>
-                <div className="form-background" ref={formBG}></div>
+                <div className="form-background" ref={formBG} style={{ opacity: form.number === 0 ? 0 : 1 }}></div>
                 {form.type == 'fill' ? fillSubform(form, changeChar) : form.type == 'stats' ? statSubForm(form, char, changeChar) : selectSubForm(form, char, changeChar)}
             </div>
             <div className="onwards">
@@ -148,7 +152,6 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
     function raceDescription(race: Race) {
         return (
             <>
-                <h1>{race.name}</h1>
                 <p>Stat Bonuses: {race.ability_bonuses.map(ability => <>{ability.ability_score.name} {ability.bonus} </>)}</p>
                 {race.traits.map(trait => <p>{trait.name}</p>)}
                 <p>{race.url}</p>
@@ -159,7 +162,6 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
     function classDescription(dndClass: DNDClass) {
         return (
             <>
-                <h1>{dndClass.name}</h1>
                 <p>HP: {dndClass.hit_die}</p>
                 <p>---Proficiencies:---</p>
                 <p>{dndClass.proficiencies.map(prof => <>{prof.name} <br /></>)}</p>
@@ -171,10 +173,15 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
     }
 
     function backgroundDescription(background: Background) {
-        console.log('background')
         return (
             <>
-                <h1>ITS A BACKGROUND</h1>
+                <p>---Proficiencies:---</p>
+                <p>{background.proficiencies.map(prof => <>{prof} <br /></>)}</p>
+                {background.tools && <p>---Tools:---</p>}
+                <p>{background.tools && background.tools.map(tool => <>{tool}</>)}</p>
+                <p>---Abilities:---</p>
+                <p>{background.ability}</p>
+                <p>{background.url}</p>
             </>
         )
     }
