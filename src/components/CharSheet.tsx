@@ -1,5 +1,5 @@
 import { CharState } from '../App'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface CharSheetProps {
     char: CharState
@@ -44,9 +44,17 @@ export default function CharSheet({ char }: CharSheetProps) {
     const [intelligence, setIntelligence] = useState(char.int + intBonus);
     const [wisdom, setWisdom] = useState(char.wis + wisBonus);
     const [charisma, setCharisma] = useState(char.cha + chaBonus);
-    const [proficiency, setProficiency] = useState(2)
-    const [skillProf, setSkillProf] = useState(Array(18).fill(false))
 
+    //Other states
+    const [proficiency, setProficiency] = useState(2)
+    const [level, setLevel] = useState(1)
+    const [skillProf, setSkillProf] = useState(Array(18).fill(false))
+    const [otherProfs, setOtherProfs] = useState('')
+    const [saveProfs, setSaveProfs] = useState(Array(6).fill(false))
+    const [equipment, setEquipment] = useState('')
+    const [features, setFeatures] = useState('')
+
+    //Handle our stat changes
     const handleStatChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
         switch (name) {
             case 'str': setStrength(parseInt(e.target.value));
@@ -65,12 +73,20 @@ export default function CharSheet({ char }: CharSheetProps) {
         }
     };
 
+    //Handle our skill "array"
     const handleSkillProf = (e: React.ChangeEvent<HTMLInputElement>, position: number) => {
         const newProfs = [...skillProf]
         newProfs[position] == false ? newProfs[position] = true : newProfs[position] = false
         setSkillProf(newProfs)
     }
 
+    const handleSaveProf = (e: React.ChangeEvent<HTMLInputElement>, position: number) => {
+        const newProfs = [...saveProfs]
+        newProfs[position] == false ? newProfs[position] = true : newProfs[position] = false
+        setSaveProfs(newProfs)
+    }
+
+    //Calc mods up front so we can use them all over
     const strMod = Math.floor((strength - 10) / 2)
     const dexMod = Math.floor((dexterity - 10) / 2)
     const conMod = Math.floor((constitution - 10) / 2)
@@ -78,26 +94,70 @@ export default function CharSheet({ char }: CharSheetProps) {
     const wisMod = Math.floor((wisdom - 10) / 2)
     const chaMod = Math.floor((charisma - 10) / 2)
 
+    //Fill out initial fields
+    useEffect(() => {
+        const initialText = `${char.background?.tools} ${char.class?.proficiencies
+            .map((prof) => prof.name)
+            .join(' ')}`;
+        setOtherProfs(initialText);
+
+        const initialEquipment = `${char.background?.equipment} 
+                                    Choose an equipment kit from https://www.5esrd.com/`
+        setEquipment(initialEquipment);
+
+        const initialFeatures =
+            `${char.background?.ability} ${char.class?.abilities.map(ability => `
+                        ${ability}`)}`
+        setFeatures(initialFeatures)
+
+        const initialSaves = [...saveProfs]
+        char.class?.saving_throws.forEach(save => {
+            switch (save.name) {
+                case "STR": initialSaves[0] = true
+                    break;
+                case "DEX": initialSaves[1] = true
+                    break;
+                case "CON": initialSaves[2] = true
+                    break;
+                case "INT": initialSaves[3] = true
+                    break;
+                case "WIS": initialSaves[4] = true
+                    break;
+                case "CHA": initialSaves[5] = true
+                    break;
+                default: console.log('initial saves error')
+            }
+        })
+        setSaveProfs(initialSaves)
+    }, []);
+
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>, target: string) => {
+        if (target == 'otherProf') setOtherProfs(e.target.value)
+        if (target == 'equipment') setEquipment(e.target.value)
+        if (target == 'features') setFeatures(e.target.value)
+    }
+
+
 
     return (
         <form className="charsheet">
             <header>
                 <section className="charname">
-                    <label htmlFor="charname">Character Name</label><input name="charname" placeholder="Thoradin Fireforge" value={char.name} />
+                    <label htmlFor="charname">Character Name</label><input name="charname" placeholder="Thoradin Fireforge" readOnly value={char.name} />
                 </section>
                 <section className="misc">
                     <ul>
                         <li>
-                            <label htmlFor="classlevel">className & Level</label><input name="classlevel" placeholder="Paladin 2" value={`1 ${char.class.name}`} />
+                            <label htmlFor="classlevel">className & Level</label><input name="classlevel" placeholder="Paladin 2" readOnly value={`${char.class.name} 1`} />
                         </li>
                         <li>
-                            <label htmlFor="background">Background</label><input name="background" placeholder="Acolyte" value={char.background.name} />
+                            <label htmlFor="background">Background</label><input name="background" placeholder="Acolyte" readOnly value={char.background.name} />
                         </li>
                         <li>
                             <label htmlFor="playername">Player Name</label><input name="playername" placeholder="Player McPlayerface" />
                         </li>
                         <li>
-                            <label htmlFor="race">Race</label><input name="race" placeholder="Half-elf" value={char.race.name} />
+                            <label htmlFor="race">Race</label><input name="race" placeholder="Half-elf" readOnly value={char.race.name} />
                         </li>
                         <li>
                             <label htmlFor="alignment">Alignment</label><input name="alignment" placeholder="Lawful Good" />
@@ -186,28 +246,28 @@ export default function CharSheet({ char }: CharSheetProps) {
                             <div className="saves list-section box">
                                 <ul>
                                     <li>
-                                        <label htmlFor="Strength-save">Strength</label><input name="Strength-save" placeholder="+0" value={char.class.saving_throws.some((throwObj) => throwObj.name == 'STR') ? strMod + proficiency : strMod}
-                                            type="text" /><input name="Strength-save-prof" type="checkbox" checked={char.class.saving_throws.some((throwObj) => throwObj.name == 'STR')} />
+                                        <label htmlFor="Strength-save">Strength</label><input name="Strength-save" readOnly placeholder="+0" value={saveProfs[0] ? strMod + proficiency : strMod}
+                                            type="text" /><input name="Strength-save-prof" type="checkbox" checked={saveProfs[0]} onChange={(e) => handleSaveProf(e, 0)} />
                                     </li>
                                     <li>
-                                        <label htmlFor="Dexterity-save">Dexterity</label><input name="Dexterity-save" placeholder="+0" value={char.class.saving_throws.some((throwObj) => throwObj.name == 'DEX') ? dexMod + proficiency : dexMod}
-                                            type="text" /><input name="Dexterity-save-prof" type="checkbox" checked={char.class.saving_throws.some((throwObj) => throwObj.name == 'DEX')} />
+                                        <label htmlFor="Dexterity-save">Dexterity</label><input name="Dexterity-save" readOnly placeholder="+0" value={saveProfs[1] ? dexMod + proficiency : dexMod}
+                                            type="text" /><input name="Dexterity-save-prof" type="checkbox" checked={saveProfs[1]} onChange={(e) => handleSaveProf(e, 1)} />
                                     </li>
                                     <li>
-                                        <label htmlFor="Constitution-save">Constitution</label><input name="Constitution-save" placeholder="+0" value={char.class.saving_throws.some((throwObj) => throwObj.name == 'CON') ? conMod + proficiency : conMod}
-                                            type="text" /><input name="Constitution-save-prof" type="checkbox" checked={char.class.saving_throws.some((throwObj) => throwObj.name == 'CON')} />
+                                        <label htmlFor="Constitution-save">Constitution</label><input name="Constitution-save" readOnly placeholder="+0" value={saveProfs[2] ? conMod + proficiency : conMod}
+                                            type="text" /><input name="Constitution-save-prof" type="checkbox" checked={saveProfs[2]} onChange={(e) => handleSaveProf(e, 2)} />
                                     </li>
                                     <li>
-                                        <label htmlFor="Wisdom-save">Wisdom</label><input name="Wisdom-save" placeholder="+0" type="text" value={char.class.saving_throws.some((throwObj) => throwObj.name == 'INT') ? intMod + proficiency : intMod} /><input
-                                            name="Wisdom-save-prof" type="checkbox" checked={char.class.saving_throws.some((throwObj) => throwObj.name == 'INT')} />
+                                        <label htmlFor="Wisdom-save">Wisdom</label><input name="Wisdom-save" readOnly placeholder="+0" type="text" value={saveProfs[3] ? wisMod + proficiency : wisMod} /><input
+                                            name="Wisdom-save-prof" type="checkbox" checked={saveProfs[3]} onChange={(e) => handleSaveProf(e, 3)} />
                                     </li>
                                     <li>
-                                        <label htmlFor="Intelligence-save">Intelligence</label><input name="Intelligence-save" placeholder="+0" value={char.class.saving_throws.some((throwObj) => throwObj.name == 'WIS') ? wisMod + proficiency : wisMod}
-                                            type="text" /><input name="Intelligence-save-prof" type="checkbox" checked={char.class.saving_throws.some((throwObj) => throwObj.name == 'WIS')} />
+                                        <label htmlFor="Intelligence-save">Intelligence</label><input name="Intelligence-save" readOnly placeholder="+0" value={saveProfs[4] ? intMod + proficiency : intMod}
+                                            type="text" /><input name="Intelligence-save-prof" type="checkbox" checked={saveProfs[4]} onChange={(e) => handleSaveProf(e, 4)} />
                                     </li>
                                     <li>
-                                        <label htmlFor="Charisma-save">Charisma</label><input name="Charisma-save" placeholder="+0" value={char.class.saving_throws.some((throwObj) => throwObj.name == 'CHA') ? chaMod + proficiency : chaMod}
-                                            type="text" /><input name="Charisma-save-prof" type="checkbox" checked={char.class.saving_throws.some((throwObj) => throwObj.name == 'CHA')} />
+                                        <label htmlFor="Charisma-save">Charisma</label><input name="Charisma-save" readOnly placeholder="+0" value={saveProfs[5] ? chaMod + proficiency : chaMod}
+                                            type="text" /><input name="Charisma-save-prof" type="checkbox" checked={saveProfs[5]} onChange={(e) => handleSaveProf(e, 5)} />
                                     </li>
                                 </ul>
                                 <div className="label">
@@ -222,75 +282,75 @@ export default function CharSheet({ char }: CharSheetProps) {
                                     </li>
                                     <li>
                                         <label htmlFor="Animal Handling">Animal Handling <span className="skill">(Wis)</span></label><input
-                                            name="Animal Handling" placeholder="+0" type="text" /><input name="Animal Handling-prof"
-                                                type="checkbox" />
+                                            name="Animal Handling" placeholder="+0" type="text" value={skillProf[1] ? wisMod + proficiency : wisMod} /><input name="Animal Handling-prof"
+                                                type="checkbox" onChange={(e) => handleSkillProf(e, 1)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Arcana">Arcana <span className="skill">(Int)</span></label><input name="Arcana"
-                                            placeholder="+0" type="text" /><input name="Arcana-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[2] ? intMod + proficiency : intMod} /><input name="Arcana-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 2)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Athletics">Athletics <span className="skill">(Str)</span></label><input name="Athletics"
-                                            placeholder="+0" type="text" /><input name="Athletics-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[3] ? strMod + proficiency : strMod} /><input name="Athletics-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 3)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Deception">Deception <span className="skill">(Cha)</span></label><input name="Deception"
-                                            placeholder="+0" type="text" /><input name="Deception-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[4] ? chaMod + proficiency : chaMod} /><input name="Deception-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 4)} />
                                     </li>
                                     <li>
                                         <label htmlFor="History">History <span className="skill">(Int)</span></label><input name="History"
-                                            placeholder="+0" type="text" /><input name="History-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[5] ? intMod + proficiency : intMod} /><input name="History-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 5)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Insight">Insight <span className="skill">(Wis)</span></label><input name="Insight"
-                                            placeholder="+0" type="text" /><input name="Insight-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[6] ? wisMod + proficiency : wisMod} /><input name="Insight-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 6)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Intimidation">Intimidation <span className="skill">(Cha)</span></label><input
-                                            name="Intimidation" placeholder="+0" type="text" /><input name="Intimidation-prof"
-                                                type="checkbox" />
+                                            name="Intimidation" placeholder="+0" type="text" value={skillProf[7] ? chaMod + proficiency : chaMod} /><input name="Intimidation-prof"
+                                                type="checkbox" onChange={(e) => handleSkillProf(e, 7)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Investigation">Investigation <span className="skill">(Int)</span></label><input
-                                            name="Investigation" placeholder="+0" type="text" /><input name="Investigation-prof"
-                                                type="checkbox" />
+                                            name="Investigation" placeholder="+0" type="text" value={skillProf[8] ? intMod + proficiency : intMod} /><input name="Investigation-prof"
+                                                type="checkbox" onChange={(e) => handleSkillProf(e, 8)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Medicine">Medicine <span className="skill">(Wis)</span></label><input name="Medicine"
-                                            placeholder="+0" type="text" /><input name="Medicine-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[9] ? wisMod + proficiency : wisMod} /><input name="Medicine-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 9)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Nature">Nature <span className="skill">(Int)</span></label><input name="Nature"
-                                            placeholder="+0" type="text" /><input name="Nature-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[10] ? intMod + proficiency : intMod} /><input name="Nature-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 10)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Perception">Perception <span className="skill">(Wis)</span></label><input name="Perception"
-                                            placeholder="+0" type="text" /><input name="Perception-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[11] ? wisMod + proficiency : wisMod} /><input name="Perception-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 11)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Performance">Performance <span className="skill">(Cha)</span></label><input name="Performance"
-                                            placeholder="+0" type="text" /><input name="Performance-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[12] ? chaMod + proficiency : chaMod} /><input name="Performance-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 12)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Persuasion">Persuasion <span className="skill">(Cha)</span></label><input name="Persuasion"
-                                            placeholder="+0" type="text" /><input name="Persuasion-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[13] ? chaMod + proficiency : chaMod} /><input name="Persuasion-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 13)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Religion">Religion <span className="skill">(Int)</span></label><input name="Religion"
-                                            placeholder="+0" type="text" /><input name="Religion-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[14] ? intMod + proficiency : intMod} /><input name="Religion-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 14)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Sleight of Hand">Sleight of Hand <span className="skill">(Dex)</span></label><input
-                                            name="Sleight of Hand" placeholder="+0" type="text" /><input name="Sleight of Hand-prof"
-                                                type="checkbox" />
+                                            name="Sleight of Hand" placeholder="+0" type="text" value={skillProf[15] ? dexMod + proficiency : dexMod} /><input name="Sleight of Hand-prof"
+                                                type="checkbox" onChange={(e) => handleSkillProf(e, 15)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Stealth">Stealth <span className="skill">(Dex)</span></label><input name="Stealth"
-                                            placeholder="+0" type="text" /><input name="Stealth-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[16] ? dexMod + proficiency : dexMod} /><input name="Stealth-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 16)} />
                                     </li>
                                     <li>
                                         <label htmlFor="Survival">Survival <span className="skill">(Wis)</span></label><input name="Survival"
-                                            placeholder="+0" type="text" /><input name="Survival-prof" type="checkbox" />
+                                            placeholder="+0" type="text" value={skillProf[17] ? wisMod + proficiency : wisMod} /><input name="Survival-prof" type="checkbox" onChange={(e) => handleSkillProf(e, 17)} />
                                     </li>
                                 </ul>
                                 <div className="label">
@@ -303,10 +363,10 @@ export default function CharSheet({ char }: CharSheetProps) {
                         <div className="label-container">
                             <label htmlFor="passiveperception">Passive Wisdom (Perception)</label>
                         </div>
-                        <input name="passiveperception" placeholder="10" />
+                        <input name="passiveperception" placeholder="10" value={skillProf[11] ? wisMod + proficiency + 10 : wisMod + 10} />
                     </div>
                     <div className="otherprofs box textblock">
-                        <label htmlFor="otherprofs">Other Proficiencies and Languages</label><textarea name="otherprofs"></textarea>
+                        <label htmlFor="otherprofs">Other Proficiencies and Languages</label><textarea name="otherprofs" value={otherProfs} onChange={(e) => handleTextAreaChange(e, 'otherProf')}></textarea>
                     </div>
                 </section>
                 <section>
@@ -318,7 +378,7 @@ export default function CharSheet({ char }: CharSheetProps) {
                         </div>
                         <div className="initiative">
                             <div>
-                                <label htmlFor="initiative">Initiative</label><input name="initiative" placeholder="+0" type="text" />
+                                <label htmlFor="initiative">Initiative</label><input name="initiative" placeholder="+0" type="text" value={dexMod} />
                             </div>
                         </div>
                         <div className="speed">
@@ -342,7 +402,7 @@ export default function CharSheet({ char }: CharSheetProps) {
                         <div className="hitdice">
                             <div>
                                 <div className="total">
-                                    <label htmlFor="totalhd">Total</label><input name="totalhd" placeholder="2d10"
+                                    <label htmlFor="totalhd">Total</label><input name="totalhd" placeholder="2d10" value={`${level}d${char.class.hit_die}`}
                                         type="text" />
                                 </div>
                                 <div className="remaining">
@@ -454,7 +514,7 @@ export default function CharSheet({ char }: CharSheetProps) {
                                     </li>
                                 </ul>
                             </div>
-                            <textarea placeholder="Equipment list here"></textarea>
+                            <textarea placeholder="Equipment list here" value={equipment} onChange={(e) => handleTextAreaChange(e, "equipment")}></textarea>
                         </div>
                     </section>
                 </section>
@@ -475,7 +535,7 @@ export default function CharSheet({ char }: CharSheetProps) {
                     </section>
                     <section className="features">
                         <div>
-                            <label htmlFor="features">Features & Traits</label><textarea name="features"></textarea>
+                            <label htmlFor="features">Features & Traits</label><textarea name="features" value={features} onChange={(e) => handleTextAreaChange(e, 'features')}></textarea>
                         </div>
                     </section>
                 </section>
