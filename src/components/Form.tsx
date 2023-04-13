@@ -26,7 +26,7 @@ export default function Form({ form, setChar, setPosition, char, position }: For
 
     const formBG = useRef<HTMLDivElement>(null)
 
-    function changeChar(key: string, value: string | number) {
+    function changeChar(key: string, value: string | number | object) {
         setChar({ ...char, [key]: value })
     }
 
@@ -53,7 +53,7 @@ export default function Form({ form, setChar, setPosition, char, position }: For
             </div>
             <div className={`inputs ${form.name}`}>
                 <div className="form-background" ref={formBG}></div>
-                {form.type == 'fill' ? fillSubform(form, changeChar) : form.type == 'stats' ? statSubForm(form, char, changeChar) : selectSubForm(form)}
+                {form.type == 'fill' ? fillSubform(form, changeChar) : form.type == 'stats' ? statSubForm(form, char, changeChar) : selectSubForm(form, char, changeChar)}
             </div>
             <div className="onwards">
                 <button className='onwardsbtn' type="submit" onClick={(e) => changePosition(e)}>
@@ -68,7 +68,7 @@ export default function Form({ form, setChar, setPosition, char, position }: For
 ////////////////////////////////SUBCOMPONENTS///////////////////////////////SUBCOMPONENTS///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function fillSubform(form: form, changeChar: (key: string, value: string | number) => void) {
+function fillSubform(form: form, changeChar: (key: string, value: string | number | object) => void) {
     return (
 
         <>
@@ -85,7 +85,7 @@ function fillSubform(form: form, changeChar: (key: string, value: string | numbe
     )
 }
 
-function statSubForm(form: form, char: CharState, changeChar: (key: string, value: string | number) => void) {
+function statSubForm(form: form, char: CharState, changeChar: (key: string, value: string | number | object) => void) {
     const stats = ['str', 'dex', 'con', 'int', 'wis', 'cha']
     const [pointsRemaining, setPoints] = useState(27)
 
@@ -129,21 +129,29 @@ function statSubForm(form: form, char: CharState, changeChar: (key: string, valu
     )
 }
 
-function selectSubForm(form: form) {
-    let values;
+function selectSubForm(form: form, char: CharState, changeChar: (key: string, value: string | number | object) => void) {
+    let values: (Race | DNDClass | Background)[];
     if (form.name == 'race') values = [dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling]
     else if (form.name == 'class') values = [barbarian]
     else if (form.name == 'background') values = [acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin]
+    else values = []
 
     if (!values) return
 
     const [currentValue, setCurrentValue] = useState<number>(0)
     const realValue = values[currentValue - 1]
 
+    useEffect(() => {
+        changeChar(form.name, realValue)
+    }, [currentValue])
+
     function raceDescription(race: Race) {
         return (
             <>
-                <h1>ITS A RACE</h1>
+                <h1>{race.name}</h1>
+                <p>Stat Bonuses: {race.ability_bonuses.map(ability => <>{ability.ability_score.name} {ability.bonus} </>)}</p>
+                {race.traits.map(trait => <p>{trait.name}</p>)}
+                <p>{race.url}</p>
             </>
         )
     }
@@ -151,7 +159,8 @@ function selectSubForm(form: form) {
     function classDescription(dndClass: DNDClass) {
         return (
             <>
-                <h1>ITS A CLASS</h1>
+                <h1>{dndClass.name}</h1>
+
             </>
         )
     }
@@ -180,11 +189,12 @@ function selectSubForm(form: form) {
         <>
             <div className={`${form.name}area`}>
                 <label htmlFor={`${form.name}input`}>{form.name.toUpperCase()}</label>
-                <select id={`${form.name}input`} onChange={(e) => setCurrentValue(e.currentTarget.selectedIndex)}>
+                <select id={`${form.name}input`} onChange={(e) => {
+                    setCurrentValue(e.currentTarget.selectedIndex)
+
+                }}>
                     <option value="">Choose Wisely</option>
-                    {values.map((value, i) =>
-                        <option value={value.name} key={i}>{value.name}</option>
-                    )}
+                    {values.map((value, i) => <option value={value.name} key={i}>{value.name}</option>)}
                 </select>
                 <div className={`${form.name}information`}>
                     {renderDescription()}

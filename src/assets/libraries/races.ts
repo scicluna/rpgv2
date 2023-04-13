@@ -96,7 +96,7 @@ export const dragonborn = {
         }
     ],
     "subraces": [],
-    "url": "/api/races/dragonborn"
+    "url": "https://www.5esrd.com/races/dragonborn"
 }
 
 export const dwarf = {
@@ -220,7 +220,7 @@ export const dwarf = {
             "url": "/api/subraces/hill-dwarf"
         }
     ],
-    "url": "/api/races/dwarf"
+    "url": "https://www.5esrd.com/races/dwarf/"
 }
 
 export const elf = {
@@ -290,7 +290,7 @@ export const elf = {
             "url": "/api/subraces/high-elf"
         }
     ],
-    "url": "/api/races/elf"
+    "url": "https://www.5esrd.com/races/elf/"
 }
 
 export const gnome = {
@@ -344,7 +344,7 @@ export const gnome = {
             "url": "/api/subraces/rock-gnome"
         }
     ],
-    "url": "/api/races/gnome"
+    "url": "https://www.5esrd.com/races/gnome/"
 }
 
 export const halfelf = {
@@ -725,7 +725,7 @@ export const halfelf = {
         }
     ],
     "subraces": [],
-    "url": "/api/races/half-elf"
+    "url": "https://www.5esrd.com/races/half-elf/"
 }
 
 export const halforc = {
@@ -797,7 +797,7 @@ export const halforc = {
         }
     ],
     "subraces": [],
-    "url": "/api/races/half-orc"
+    "url": "https://www.5esrd.com/races/half-orc/"
 }
 
 export const halfling = {
@@ -856,7 +856,7 @@ export const halfling = {
             "url": "/api/subraces/lightfoot-halfling"
         }
     ],
-    "url": "/api/races/halfling"
+    "url": "https://www.5esrd.com/races/halfling/"
 }
 
 export const human = {
@@ -1057,7 +1057,7 @@ export const human = {
     "language_desc": "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
     "traits": [],
     "subraces": [],
-    "url": "/api/races/human"
+    "url": "https://www.5esrd.com/races/human/"
 }
 
 export const tiefling = {
@@ -1118,6 +1118,6 @@ export const tiefling = {
         }
     ],
     "subraces": [],
-    "url": "/api/races/tiefling"
+    "url": "https://www.5esrd.com/races/tiefling/"
 }
 
