@@ -2,7 +2,7 @@ import { CharState } from "../App";
 import React, { useEffect, useRef, useState } from "react";
 import { Race, dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling } from '../assets/libraries/races.js'
 import { DNDClass, barbarian } from "../assets/libraries/classes";
-import { acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin } from "../assets/libraries/backgrounds";
+import { Background, acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin } from "../assets/libraries/backgrounds";
 
 
 type form = {
@@ -23,8 +23,6 @@ interface Formprop {
 }
 
 export default function Form({ form, setChar, setPosition, char, position }: Formprop) {
-
-    console.log(form)
 
     const formBG = useRef<HTMLDivElement>(null)
 
@@ -135,14 +133,12 @@ function selectSubForm(form: form) {
     let values;
     if (form.name == 'race') values = [dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling]
     else if (form.name == 'class') values = [barbarian]
-    else if (form.name == 'backgrounds') return
+    else if (form.name == 'background') values = [acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin]
 
     if (!values) return
 
     const [currentValue, setCurrentValue] = useState<number>(0)
     const realValue = values[currentValue - 1]
-
-    console.log(form.name)
 
     function raceDescription(race: Race) {
         return (
@@ -160,9 +156,11 @@ function selectSubForm(form: form) {
         )
     }
 
-    function backgroundDescription() {
+    function backgroundDescription(background: Background) {
+        console.log('background')
         return (
             <>
+                <h1>ITS A BACKGROUND</h1>
             </>
         )
     }
@@ -173,7 +171,9 @@ function selectSubForm(form: form) {
             return raceDescription(realValue)
         } else if ('hit_die' in realValue) {
             return classDescription(realValue)
-        }
+        } else if (form.name == 'background') {
+            return backgroundDescription(realValue)
+        } else console.log('error')
     }
 
     return (
