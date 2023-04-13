@@ -605,6 +605,7 @@ Pick: ${char.class?.proficiency_choices[0].desc}`;
             <button className='newcharacterbutton' onClick={(e) => {
                 e.preventDefault()
                 localStorage.removeItem('state')
+                setChar({ complete: false, name: '', age: '', gender: '', str: 8, dex: 8, con: 8, int: 8, wis: 8, cha: 8 })
                 setPosition(0)
             }}> RESTART
             </button>

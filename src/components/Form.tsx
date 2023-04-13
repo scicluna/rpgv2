@@ -60,7 +60,7 @@ export default function Form({ form, setChar, setPosition, char, position, end }
                 {form.type == 'fill' ? fillSubform(form, changeChar) : form.type == 'stats' ? statSubForm(form, char, changeChar) : selectSubForm(form, char, changeChar)}
             </div>
             <div className="onwards">
-                <button className='onwardsbtn' type="submit" onClick={(e) => changePosition(e)}>
+                <button className={`onwardsbtn ${form.number == end ? 'invisible' : ''}`} type="submit" onClick={(e) => changePosition(e)}>
                     <i className="fas fa-share fa-5x"></i>
                 </button>
             </div>
@@ -153,7 +153,7 @@ function selectSubForm(form: form, char: CharState, changeChar: (key: string, va
         return (
             <>
                 <p>Stat Bonuses: {race.ability_bonuses.map(ability => `${ability.ability_score.name} ${ability.bonus} `)}</p>
-                {race.traits.map(trait => <p>{trait.name}</p>)}
+                <p>{race.traits.map(trait => `${trait.name}\n`)}</p>
                 <p>{race.url}</p>
             </>
         )

@@ -30,23 +30,70 @@ function App() {
   useEffect(() => {
     const state = JSON.parse(localStorage.getItem('state') ?? '{}')
     if (state?.char?.complete) setChar(state.char)
+    handleText(formPosition)
   }, [])
 
 
   useEffect(() => {
     if (!stage.current) return;
     stage.current.style.backgroundImage = `url(./src/assets/backgrounds/form${formPosition}.webp)`
+    handleText(formPosition)
   }, [formPosition]);
 
-  function isCompleted(char: CharState) {
+  function isCompleted(e: React.MouseEvent<HTMLButtonElement>, char: CharState) {
     setChar({ ...char, complete: true })
+    e.currentTarget.classList.add('hide')
+  }
+
+  function slowText(str: string, target: string) {
+    let letterWrapper;
+    target == 'top' ? letterWrapper = document.querySelector<HTMLDivElement>('.letterwrappertop')
+      : letterWrapper = document.querySelector<HTMLDivElement>('.letterwrapperbottom')
+
+    for (const letter of str) {
+      const newLetter = document.createElement('div')
+      newLetter.innerText = letter
+      newLetter.classList.add('faded')
+      newLetter.classList.add('newletter')
+      letterWrapper?.append(newLetter)
+    }
+
+    const newLetters = document.querySelectorAll<HTMLDivElement>('.newletter')
+    newLetters.forEach((letter, i) => {
+      fadeInLetter(letter, i)
+    })
+  }
+
+  function fadeInLetter(letter: HTMLElement, index: number) {
+    setTimeout(() => {
+      letter.classList.remove('faded')
+    }, index * 250)
+  }
+
+  function handleText(formIndex: number) {
+    const letterWrappers = document.querySelectorAll('.letterwrapper')
+    letterWrappers.forEach(wrapper => {
+      wrapper.innerHTML = ''
+    })
+    switch (formIndex) {
+      case 0: slowText('Who might you be?', 'top')
+        break;
+      case 1: slowText('What are your Strengths and Weaknesses?', 'bottom')
+        break;
+      case 2: slowText('Which lineage do you belong to?', 'top')
+        break;
+      case 3: slowText('What path do you walk?', 'bottom')
+        break;
+      case 4: slowText('Before you adventured, what did you do?', 'top')
+        break;
+    }
   }
 
   return (
     <main className="mainstage" ref={stage}>
       {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet char={char} setChar={setChar} setPosition={setPosition} />}
       {char.name && char.age && char.gender && char.str && char.dex && char.con && char.int && char.wis && char.cha && char.race && char.class && char.background
-        && <button className="completebtn" onClick={() => isCompleted(char)}>Complete</button>}
+        && <button className={`${char.complete} ? 'completebtn' : 'hide'`} onClick={(e) => isCompleted(e, char)}>Complete</button>}
     </main>
 
   )
