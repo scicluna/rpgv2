@@ -34,9 +34,9 @@ export default function CharSheet({ char, setChar, setPosition }: CharSheetProps
     const [saveState, setSaveState] = useState<SaveState>(JSON.parse(localStorage.getItem('state') ?? '{}') as SaveState || undefined)
 
     //TS logic gap
-    if (!char.class) return <></>
-    if (!char.race) return <></>
-    if (!char.background) return <></>
+    if (!char.class) return null
+    if (!char.race) return null
+    if (!char.background) return null
 
     //Race Stat Bonus Application
     let strBonus = 0
@@ -107,12 +107,14 @@ Pick: ${char.class?.proficiency_choices[0].desc}`;
     }, []);
 
     //Stat states
+    //Stat area component?
     const [strength, setStrength] = useState(char.str + strBonus);
     const [dexterity, setDexterity] = useState(char.dex + dexBonus);
     const [constitution, setConstitution] = useState(char.con + conBonus);
     const [intelligence, setIntelligence] = useState(char.int + intBonus);
     const [wisdom, setWisdom] = useState(char.wis + wisBonus);
     const [charisma, setCharisma] = useState(char.cha + chaBonus);
+    const [stats, setStats] = useState([8, 8, 8, 8, 8, 8])
 
     //Other states
     const [proficiency, setProficiency] = useState(saveState?.proficiency || 2)
@@ -250,7 +252,7 @@ Pick: ${char.class?.proficiency_choices[0].desc}`;
                                 </li>
                                 <li>
                                     <div className="score">
-                                        <label htmlFor="Constitutionscore">Constitution</label><input name="Constitutionscore" onChange={(e) => handleStatChange(e, 'con')} readOnly placeholder="10" value={constitution}
+                                        <label htmlFor="Constitutionscore">Constitution</label><input name="Constitutionscore" onChange={(e) => handleStatChange(e, 'con')} placeholder="10" value={constitution}
                                             className="stat" />
                                     </div>
                                     <div className="modifier">
@@ -259,7 +261,7 @@ Pick: ${char.class?.proficiency_choices[0].desc}`;
                                 </li>
                                 <li>
                                     <div className="score">
-                                        <label htmlFor="Intelligencescore">Intelligence</label><input name="Intelligencescore" onChange={(e) => handleStatChange(e, 'int')} readOnly placeholder="10" value={intelligence}
+                                        <label htmlFor="Intelligencescore">Intelligence</label><input name="Intelligencescore" onChange={(e) => handleStatChange(e, 'int')} placeholder="10" value={intelligence}
                                             className="stat" />
                                     </div>
                                     <div className="modifier">
@@ -268,7 +270,7 @@ Pick: ${char.class?.proficiency_choices[0].desc}`;
                                 </li>
                                 <li>
                                     <div className="score">
-                                        <label htmlFor="Wisdomscore">Wisdom</label><input name="Wisdomscore" className="stat" onChange={(e) => handleStatChange(e, 'wis')} readOnly placeholder="10" value={wisdom} />
+                                        <label htmlFor="Wisdomscore">Wisdom</label><input name="Wisdomscore" className="stat" onChange={(e) => handleStatChange(e, 'wis')} placeholder="10" value={wisdom} />
                                     </div>
                                     <div className="modifier">
                                         <input name="Wisdommod" placeholder="+0" readOnly value={wisMod} />
