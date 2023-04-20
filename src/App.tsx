@@ -4,6 +4,7 @@ import CharSheet from "./components/CharSheet"
 import { Race } from "./assets/libraries/races";
 import { DNDClass } from "./assets/libraries/classes";
 import { Background } from "./assets/libraries/backgrounds";
+import { formBackgrounds } from "./assets/libraries/formbackgrounds";
 
 export interface CharState {
   complete: boolean;
@@ -36,7 +37,7 @@ function App() {
 
   useEffect(() => {
     if (!stage.current) return;
-    stage.current.style.backgroundImage = `url(./src/assets/backgrounds/form${formPosition}.webp)`
+    stage.current.style.backgroundImage = `url(${formBackgrounds[formPosition]})`
     handleText(formPosition)
   }, [formPosition]);
 
