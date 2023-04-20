@@ -90,6 +90,8 @@ function App() {
   }
 
   //dont start ternery with !
+  //pass down functions that have set in them
+  //context avoids drilling
   return (
     <main ref={stage} className={`mainstage ${char.complete ? 'charsheet' : ''}`}>
       {!char.complete ? <FormCarousel char={char} setChar={setChar} formPosition={formPosition} setPosition={setPosition} /> : <CharSheet char={char} setChar={setChar} setPosition={setPosition} />}
