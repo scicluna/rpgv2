@@ -1,8 +1,8 @@
 import { CharState } from "../App";
 import React, { useEffect, useRef, useState } from "react";
-import { Race, dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling } from '../assets/libraries/races.js'
-import { DNDClass, barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard } from "../assets/libraries/classes";
-import { Background, acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin } from "../assets/libraries/backgrounds";
+import { Race, dragonborn, dwarf, elf, gnome, halfelf, halforc, halfling, human, tiefling } from '../public/assets/libraries/races'
+import { DNDClass, barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard } from "../public/assets/libraries/classes";
+import { Background, acolyte, charlatan, criminal, entertainer, folkhero, gladiator, guildartisan, hermit, knight, noble, outlander, pirate, sage, sailor, soldier, urchin } from "../public/assets/libraries/backgrounds";
 
 
 type form = {
@@ -44,7 +44,7 @@ export default function Form({ form, setChar, setPosition, char, position, end }
         if (position == form.number) {
             formBG.current.style.opacity = '0'
         } else formBG.current.style.opacity = '1'
-        formBG.current.style.backgroundImage = `url(./form${form.number}.webp)`
+        formBG.current.style.backgroundImage = `url(./assets/backgrounds/form${form.number}.webp)`
     }, [position])
 
     return (
