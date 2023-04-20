@@ -44,7 +44,7 @@ export default function Form({ form, setChar, setPosition, char, position, end }
         if (position == form.number) {
             formBG.current.style.opacity = '0'
         } else formBG.current.style.opacity = '1'
-        formBG.current.style.backgroundImage = `url(./src/assets/backgrounds/form${form.number}.webp)`
+        formBG.current.style.backgroundImage = `url(./form${form.number}.webp)`
     }, [position])
 
     return (
