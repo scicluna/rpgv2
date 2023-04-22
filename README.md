@@ -19,7 +19,7 @@ RPG Sheet marked my initial venture into the world of TypeScript and React. This
 
   ## Usage
 
-  Just use the link: [](scicluna.github.io/rpgv2/)
+  Just use the link: [scicluna.github.io/rpgv2/](scicluna.github.io/rpgv2/)
   ![rpgsheet](rpgsheet.png)
 
   ## License
