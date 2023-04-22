@@ -19,7 +19,7 @@ RPG Sheet marked my initial venture into the world of TypeScript and React. This
 
   ## Usage
 
-  Just use the link: scicluna.github.io/rpgv2/
+  Just use the link: [](scicluna.github.io/rpgv2/)
   ![rpgsheet](rpgsheet.png)
 
   ## License
@@ -28,6 +28,6 @@ RPG Sheet marked my initial venture into the world of TypeScript and React. This
 
   ## Questions
 
-  1. Where can I find your github so that I can view your other projects? [](https://github.com/scicluna)
+  1. Where can I find your github so that I can view your other projects? https://github.com/scicluna
 
   2. What email address should I use to contact you regarding further opportunities or questions? sciclunajl@gmail.com
