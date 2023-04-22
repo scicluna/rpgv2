@@ -30,7 +30,7 @@ export default function FormCarousel({ setChar, setPosition, char, formPosition 
         <>
             <div className="letterwrappertop letterwrapper golden-outline"></div>
             <section className='carouselwrapper' data-wrapper={formPosition} ref={carouselWrapperRef}>
-                {forms.map(form => <Form form={form} char={char} end={forms.length - 1} setChar={setChar} setPosition={setPosition} position={formPosition} key={form.name} />)}
+                {forms.map((form, i) => <Form form={form} char={char} end={forms.length - 1} setChar={setChar} setPosition={setPosition} position={formPosition} key={form.name} />)}
             </section>
             <div className="letterwrapperbottom letterwrapper golden-outline"></div>
         </>

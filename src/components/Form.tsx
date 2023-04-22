@@ -45,7 +45,7 @@ export default function Form({ form, setChar, setPosition, char, position, end }
         if (position == form.number) {
             formBG.current.style.opacity = '0'
         } else formBG.current.style.opacity = '1'
-        formBG.current.style.backgroundImage = `url(${formBackgrounds[position]})`;
+        formBG.current.style.backgroundImage = `url(${formBackgrounds[form.number]})`;
     }, [position])
 
     return (
